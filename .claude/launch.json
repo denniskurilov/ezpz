@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ui-static",
+      "runtimeExecutable": "C:\\Program Files\\Java\\latest\\jdk-25\\bin\\jwebserver.exe",
+      "runtimeArgs": ["-p", "8099", "-d", "C:\\home\\docs\\sources\\idea-projects\\ezpz\\ui"],
+      "port": 8099
+    }
+  ]
+}

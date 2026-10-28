@@ -6,6 +6,17 @@
       "runtimeExecutable": "C:\\Program Files\\Java\\latest\\jdk-25\\bin\\jwebserver.exe",
       "runtimeArgs": ["-p", "8099", "-d", "C:\\home\\docs\\sources\\idea-projects\\ezpz\\ui"],
       "port": 8099
+    },
+    {
+      "name": "ezpz-app",
+      "runtimeExecutable": "powershell.exe",
+      "runtimeArgs": [
+        "-NoProfile",
+        "-Command",
+        "$env:JAVA_HOME='C:\\Program Files\\Java\\latest\\jdk-25'; foreach ($n in 'EZPZ_USR','EZPZ_PWD') { Set-Item \"env:$n\" ([Environment]::GetEnvironmentVariable($n,'User')) }; .\\mvnw.cmd -B spring-boot:run '-Dspring-boot.run.arguments=--server.port=8081'"
+      ],
+      "port": 8081,
+      "url": "http://localhost:8081"
     }
   ]
 }

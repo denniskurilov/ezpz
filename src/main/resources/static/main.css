@@ -1,0 +1,241 @@
+/* =====================================================================
+   EZPZ - Employee Registry
+   Shared styles for all pages
+   ===================================================================== */
+
+:root {
+    --ezpz-header-height: 64px;
+    --ezpz-footer-height: 68px;
+    --ezpz-accent: #4f6bed;
+    --ezpz-accent-soft: rgba(79, 107, 237, 0.12);
+}
+
+[data-bs-theme="dark"] {
+    --ezpz-accent: #7b93ff;
+    --ezpz-accent-soft: rgba(123, 147, 255, 0.16);
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bs-tertiary-bg);
+}
+
+/* ---------- Header ---------- */
+
+.app-header {
+    height: var(--ezpz-header-height);
+    flex-shrink: 0;
+    background-color: var(--bs-body-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.app-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.app-brand-logo {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background-color: var(--ezpz-accent);
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.app-brand-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.1;
+}
+
+.app-brand-subtitle {
+    font-size: 0.8rem;
+    color: var(--bs-secondary-color);
+}
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+}
+
+/* ---------- Main area ---------- */
+
+.app-main {
+    flex: 1 1 auto;
+    min-height: 0; /* lets the table wrapper scroll instead of the page */
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+}
+
+/* index.html: leave room for the fixed pagination footer */
+.page-list .app-main {
+    padding-bottom: calc(var(--ezpz-footer-height) + 1.25rem);
+}
+
+.table-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+/* Scrolling happens here, not on the page */
+.table-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+}
+
+.employee-table {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+}
+
+.employee-table th,
+.employee-table td {
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.employee-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--bs-secondary-color);
+    background-color: var(--bs-secondary-bg);
+    border-bottom-width: 1px;
+}
+
+.employee-table .col-id {
+    width: 1%;
+    color: var(--bs-secondary-color);
+    font-variant-numeric: tabular-nums;
+}
+
+.employee-table .col-dob {
+    font-variant-numeric: tabular-nums;
+}
+
+.employee-table .col-actions {
+    width: 1%;
+    text-align: end;
+}
+
+.employee-table tbody tr:hover > * {
+    background-color: var(--ezpz-accent-soft);
+}
+
+/* ---------- Fixed pagination footer ---------- */
+
+.app-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--ezpz-footer-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bs-body-bg);
+    border-top: 1px solid var(--bs-border-color);
+    z-index: 1030;
+}
+
+.app-footer .pagination {
+    margin-bottom: 0;
+}
+
+.pagination {
+    --bs-pagination-active-bg: var(--ezpz-accent);
+    --bs-pagination-active-border-color: var(--ezpz-accent);
+}
+
+/* ---------- Flash message (toast) ---------- */
+
+.toast-area {
+    position: fixed;
+    top: calc(var(--ezpz-header-height) + 0.75rem);
+    right: 1rem;
+    z-index: 1080;
+}
+
+/* ---------- Employee form page ---------- */
+
+.form-card {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.75rem;
+}
+
+.form-card .form-control {
+    font-size: 1.05rem;
+    padding: 0.65rem 0.9rem;
+}
+
+.form-card .form-control:disabled {
+    color: var(--bs-secondary-color);
+}
+
+.btn-accent {
+    --bs-btn-bg: var(--ezpz-accent);
+    --bs-btn-border-color: var(--ezpz-accent);
+    --bs-btn-hover-bg: var(--ezpz-accent);
+    --bs-btn-hover-border-color: var(--ezpz-accent);
+    --bs-btn-active-bg: var(--ezpz-accent);
+    --bs-btn-active-border-color: var(--ezpz-accent);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-color: #fff;
+}
+
+.btn-accent:hover {
+    filter: brightness(1.08);
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 576px) {
+    .app-main {
+        padding: 0.75rem;
+    }
+
+    .page-list .app-main {
+        padding-bottom: calc(var(--ezpz-footer-height) + 0.75rem);
+    }
+
+    .app-brand-subtitle {
+        display: none;
+    }
+
+    .employee-table th,
+    .employee-table td {
+        padding: 0.75rem;
+    }
+}

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light" xmlns:th="http://www.thymeleaf.org"
+      th:with="isNew=${employee.id == null}">
+<head th:replace="~{fragments :: head(${isNew} ? 'New employee' : 'Edit employee')}"></head>
+<body class="page-form">
+
+<header th:replace="~{fragments :: header(null)}"></header>
+
+<!-- ===================== Form ===================== -->
+<main class="app-main overflow-auto">
+    <div class="form-card p-4 p-md-5">
+        <h1 class="h3 mb-4" th:text="${isNew} ? 'New employee' : 'Edit employee'">Edit employee</h1>
+
+        <form method="post" novalidate th:object="${employee}"
+              th:action="${isNew} ? @{/employees} : @{/employees/{id}(id=${employee.id})}">
+            <input type="hidden" name="page" th:value="${page}">
+
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    <label for="id" class="form-label">ID</label>
+                    <input type="text" class="form-control" id="id" disabled
+                           th:value="${employee.id}">
+                </div>
+                <div class="col-sm-8">
+                    <label for="createdAt" class="form-label">Created at</label>
+                    <!-- Stored in UTC; main.js converts data-utc to the browser's locale and time zone.
+                         Without JS the UTC value stays visible. -->
+                    <input type="text" class="form-control" id="createdAt" disabled
+                           th:if="${createdAt != null}"
+                           th:value="${#temporals.format(createdAt, 'yyyy-MM-dd HH:mm:ss')} + ' UTC'"
+                           th:data-utc="${#temporals.format(createdAt, 'yyyy-MM-dd')} + 'T' + ${#temporals.format(createdAt, 'HH:mm:ss')} + 'Z'">
+                    <input type="text" class="form-control" id="createdAt" disabled
+                           th:unless="${createdAt != null}">
+                </div>
+
+                <div class="col-12">
+                    <label for="firstName" class="form-label">First name</label>
+                    <input type="text" class="form-control" th:field="*{firstName}" th:errorclass="is-invalid"
+                           maxlength="100" required autofocus>
+                    <div class="invalid-feedback" th:errors="*{firstName}">First name is required</div>
+                </div>
+
+                <div class="col-12">
+                    <label for="lastName" class="form-label">Last name</label>
+                    <input type="text" class="form-control" th:field="*{lastName}" th:errorclass="is-invalid"
+                           maxlength="100" required>
+                    <div class="invalid-feedback" th:errors="*{lastName}">Last name is required</div>
+                </div>
+
+                <div class="col-12">
+                    <label for="dateOfBirth" class="form-label">Date of birth</label>
+                    <input type="date" class="form-control" th:field="*{dateOfBirth}" th:errorclass="is-invalid"
+                           th:max="${#temporals.format(#temporals.createToday(), 'yyyy-MM-dd')}">
+                    <div class="invalid-feedback" th:errors="*{dateOfBirth}">Invalid date</div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary px-4"
+                        data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel</button>
+                <button type="submit" class="btn btn-accent px-4">
+                    <i class="bi bi-check-lg me-1"></i>Save
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<!-- ===================== Cancel confirmation ===================== -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Discard changes?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Any unsaved changes will be lost. Do you want to leave this page?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Stay</button>
+                <a class="btn btn-danger" th:href="@{/employees(page=${page})}">Discard</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+</body>
+</html>

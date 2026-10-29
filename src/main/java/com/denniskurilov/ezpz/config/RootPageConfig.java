@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 
 /**
  * The application lives under the /ezpz context path, so nothing answers on "/".
@@ -37,12 +38,24 @@ public class RootPageConfig {
 
 	private static class RootPageServlet extends HttpServlet {
 
+		private final byte[] page;
+
+		RootPageServlet() {
+			// Load with the application's class loader, once at startup. Requests to the root
+			// context run with that context's own class loader, which in the packaged jar
+			// cannot see BOOT-INF/classes (in the IDE the flat classpath hides this).
+			ClassPathResource resource = new ClassPathResource("root/index.html", RootPageConfig.class.getClassLoader());
+			try (InputStream in = resource.getInputStream()) {
+				page = in.readAllBytes();
+			} catch (IOException e) {
+				throw new UncheckedIOException("Cannot load " + resource, e);
+			}
+		}
+
 		@Override
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 			response.setContentType("text/html;charset=UTF-8");
-			try (InputStream page = new ClassPathResource("root/index.html").getInputStream()) {
-				page.transferTo(response.getOutputStream());
-			}
+			response.getOutputStream().write(page);
 		}
 
 	}
